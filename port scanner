@@ -1,0 +1,34 @@
+import sys
+import socket
+from datetime import datetime
+
+# check the argument is valid or not
+
+if (len(sys.argv))==2:
+   target=socket.gethostbyname(sys.argv[1])
+else:
+    print("synatx:python3 new.py <ip>")
+    sys.exit()
+print("_"*50)
+print("starting time " + str(datetime.now()))
+print("target machine is "+ target)
+print("_"*50)
+
+try:
+   for port in range(10,150):
+       s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+       socket.setdefaulttimeout(1)
+       result=s.connect_ex((target,port))
+       
+       if result==0:
+          print(f" port {port} is open")
+       s.close()
+
+except KeyboardInterrupt:
+       print("\n exiting system")
+       sys.exit()
+      
+except socket.gaierror:
+       print("please provide ip", "name is not understandable")
+       sys.exit()
+       
