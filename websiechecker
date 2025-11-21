@@ -1,0 +1,43 @@
+import ssl
+import requests
+import socket
+
+def check_protocol(domain):
+    http_url="http://"+domain
+    https_url="https://"+domain
+    
+    try:
+       r_https=requests.get(https_url, timeout=5, allow_redirects=True)
+       print("secure")
+    except: 
+           print("not secure")
+    try:
+       r_http=requests.get(http_url, timeout=5, allow_redirects=True)
+       if r_https.url.startswith("https://"):
+           print("secure")
+       else:
+           print("not secure")
+    except: 
+           print("not secure")
+           
+def checksslcert(domain):
+    try:
+       ctx=ssl.create_default_context()
+       with ctx.wrap_socket(socket.socket(), server_hostname=domain) as s:
+            s.settimeout(5)
+            s.connect((domain,443))
+            cert=s.getpeercert()
+            print("cert info ",cert)
+    except:
+          print("not able to retrive the cert")
+          
+
+       
+checksslcert("kadiyasamaj.com")
+check_protocol("kadiyasamaj.com")
+       
+       
+           
+           
+      
+    
